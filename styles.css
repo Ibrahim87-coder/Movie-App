@@ -57,6 +57,8 @@ img {
   padding: 1rem;
   max-height: 100%;
   opacity: 0;
+  
+  overflow: scroll;
 }
 .card:hover .overview {
   opacity: 1;
@@ -84,4 +86,136 @@ img {
 
 .highlight {
   background-color: teal;
+}
+
+.know-more{
+  background-color: orange;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 50px;
+  padding: 10px 20px;
+  margin-top: 5px;
+
+}
+
+.overlay {
+  /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+  height: 100%;
+  width: 0;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  background-color: rgb(0,0,0); /* Black fallback color */
+  background-color: rgba(0,0,0, 0.9); /* Black w/opacity */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+}
+
+/* Position the content inside the overlay */
+.overlay-content {
+  position: relative;
+  top: 10%; /* 25% from the top */
+  width: 100%; /* 100% width */
+  text-align: center; /* Centered text/links */
+  margin-top: 30px; 
+}
+
+
+.overlay a {
+  padding: 8px;
+  text-decoration: none;
+  font-size: 36px;
+  color: #818181;
+  display: block; 
+  transition: 0.3s; 
+}
+
+.overlay a:hover, .overlay a:focus {
+  color: #f1f1f1;
+}
+
+.overlay .closebtn {
+  position: absolute;
+  top: 20px;
+  right: 45px;
+  font-size: 60px;
+}
+
+@media screen and (max-height: 450px) {
+  .overlay a {font-size: 20px}
+  .overlay .closebtn {
+    font-size: 40px;
+    top: 15px;
+    right: 35px;
+  }
+}
+
+
+.pagination{
+  display: flex;
+  margin: 10px 30px;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 2px;
+  color:white;
+  font-weight: bold;
+}
+.page{
+  padding: 20px;
+  cursor: pointer;
+}
+.page.disabled{
+  cursor: not-allowed;
+  color: grey;
+}
+.current{
+  border-radius: 50%;
+  border: 5px solid orange;
+  padding: 10px 20px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.embed.hide{
+  display: none;
+}
+
+.embed.show{
+  display: inline-block;
+}
+
+.arrow{
+  position: absolute;
+
+}
+.arrow.left-arrow{
+  left: 0%;
+  font-size: 50px;
+  transform: translateY(-50%);
+  top: 50%;
+}
+.arrow.right-arrow{
+  right:0%;
+  font-size: 50px;
+  transform: translateY(-50%);
+  top: 50%;
+}
+
+.dots{
+  margin-top: 30px;
+}
+
+.dots .dot.active{
+  border-color: lightgreen;
+  transition: 2ms;
+}
+.dots .dot{
+  border-radius: 50%;
+  margin:5px;
+  border: 5px solid orange;
+  padding: 5px 15px;
+  font-size: 20px;
+  font-weight: 600;
+  color: white;
 }

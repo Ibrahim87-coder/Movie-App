@@ -5,21 +5,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movie App</title>
-    <link rel="shortcut icon" href="https://image.flaticon.com/icons/png/512/1038/1038100.png" type="image/x-icon" />
-    
+    <link
+      rel="shortcut icon"
+      href="https://image.flaticon.com/icons/png/512/1038/1038100.png"
+      type="image/x-icon"
+    />
+
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 20px;">
+    <nav
+      class="navbar navbar-expand-lg navbar-light bg-light"
+      style="padding: 20px">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
-          <img style="height:60px ;width:270px;" src="https://o.remove.bg/downloads/6cff5345-5449-405a-8e88-04269f81631c/data-original-removebg-preview.png" alt="Logo">
+          <img
+            style="height: 100px; width: 150px"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Tmdb.new.logo.svg/2560px-Tmdb.new.logo.svg.png"
+            alt="Tmdb Logo"
+          />
         </a>
         <button
           class="navbar-toggler"
@@ -28,18 +38,16 @@
           data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+          aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div  class="collapse navbar-collapse" id="navbarSupportedContent">
-          <form class=" d-flex" id="form" >
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <form class="d-flex" id="form">
             <input
-              class=" form-control me-2"
+              class="form-control me-2"
               type="search"
               placeholder="Search"
-              id="search"
-            />
+              id="search"/>
             <button class="btn btn-outline-success" type="submit">
               Search
             </button>
@@ -48,19 +56,28 @@
       </div>
     </nav>
 
-    <div id="tags">
-      <div class="tag">Action</div>
-      <div class="tag">Adventure</div>
-      <div class="tag">Drama</div>
-      <div class="tag">Comedy</div>
+    <div id="tags"></div>
+
+    <div id="myNav" class="overlay">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <div class="overlay-content" id="overlay-contents"></div>
+
+      <a href="javascript:void(0)" class="arrow left-arrow" id="left-arrow" >&#8656;</a>
+      <a href="javascript:void(0)" class="arrow right-arrow" id="right-arrow" >&#8658;</a>
     </div>
+
     <main id="main"></main>
 
+    <div class="pagination">
+      <div class="page" id="prev">Previous Page</div>
+      <div class="current" id="current">1</div>
+      <div class="page" id="next">Next Page</div>
+    </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-      crossorigin="anonymous"
-    ></script>
+      crossorigin="anonymous">
+    </script>
 
     <script src="app.js"></script>
   </body>

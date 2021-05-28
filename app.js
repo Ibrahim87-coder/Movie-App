@@ -13,27 +13,55 @@ const main = document.getElementById("main");
 const form = document.getElementById("form");
 const search = document.getElementById("search");
 const tagsEl = document.getElementById("tags");
+const prev= document.getElementById('prev');
+const next= document.getElementById('next');
+const current= document.getElementById('current');
+var currentpage =1;
+var nextpage=2;
+var prevpage=3;
+var lastUrl ='';
+var totalPages=100;
+
+
 
 // Get Movies
 
 getMovies(API_URL);
 
 function getMovies(url) {
+  lastUrl = url
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
       if (data.results.length != 0) {
         showMovies(data.results);
+         currentpage =data.page;
+         nextpage= currentpage +1 ;
+         prevpage=currentpage  -1 ;
+         totalPages=data.total_pages;
+
+         current.innerText = currentpage;
+
+         if(currentpage<= 1){
+           prev.classList.add('disabled');
+           next.classList.remove('disabled')
+         }else if(currentpage>=totalPages){
+          prev.classList.remove('disabled');
+          next.classList.add('disabled')
+         }else{
+          prev.classList.remove('disabled');
+          next.classList.remove('disabled')
+         }
+
+         tagsEl.scrollIntoView({behavior:'smooth'})
+
       } else {
-        main.innerHTML = `
-                <h1 style="margin:20px; weight:bold">No Results Found!!</h1>
-            `;
+        main.innerHTML = `<h1 style="margin:20px; weight:bold">No Results Found!!</h1>`;
       }
-      console.log(data);
     });
 }
 function showMovies(data) {
-  main.innerHTML = "";
+  main.innerHTML = '';
 
   data.forEach((movie) => {
     const { title, poster_path, vote_average, overview, id } = movie;
@@ -57,9 +85,16 @@ function showMovies(data) {
         <div class="overview">
             <h3>Overview</h3>
             ${overview}
+            <br/>
+            <button class="know-more" id="${id}">More Details</button>
+ 
             </div>
         `;
     main.appendChild(movieElement);
+
+    document.getElementById(id).addEventListener('click',()=>{
+      openNav(movie);
+    })
   });
 }
 
@@ -155,5 +190,136 @@ function clearAll() {
       getMovies(API_URL);
     });
     tagsEl.append(clear);
+  }
+}
+
+const overlayContent = document.getElementById('overlay-contents');
+
+function openNav(movie) {
+  const{id}=movie
+  fetch(BASE_URL+'/movie/'+id+'/videos?'+API_KEY).then(res=>res.json())
+  .then((videoData)=>{
+    if(videoData){
+      document.getElementById("myNav").style.width = "100%";
+      if(videoData.results.length > 0){
+        var embed =[];
+        var dots = [];
+        videoData.results.forEach((video,idx)=>{
+          let{name,key,site}=video
+          if(site == 'YouTube'){
+            embed.push(`
+        <iframe
+          class = "embed hide"
+          width="340"
+          height="315"
+          src="https://www.youtube.com/embed/${key}"
+          title="${name}"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+            `)
+
+            dots.push(`
+            <span class="dot">${idx+1}</span>
+            `)
+          }
+        })
+        var content =`
+        <h1 style="margin:20px; weight:bold;color:white">${movie.original_title}</h1>
+        <br/>
+        ${embed.join(``)}
+        <br/>
+        <div class="dots">${dots.join('')}</div>
+        `
+        
+        overlayContent.innerHTML =content;
+        activeSlide=0;
+        showVideos();
+      }else{
+        overlayContent.innerHTML = `<h1 style="margin:20px; weight:bold">No Results Found!!</h1>`
+      }
+    }
+  })
+}
+var activeSlide=0;
+var totalVideos=0;
+function showVideos(){
+   let embedClasses = document.querySelectorAll('.embed');
+   let dots = document.querySelectorAll('.dot');
+   totalVideos = embedClasses.length;
+   embedClasses.forEach((embedTag,idx)=>{
+     if(activeSlide==idx){
+       embedTag.classList.add('show');
+       embedTag.classList.remove('hide');
+     }else{
+       
+      embedTag.classList.remove('show');
+      embedTag.classList.add('hide');
+     }
+   })
+  
+   dots.forEach((dot,indx)=>{
+     if(activeSlide == indx){
+       dot.classList.add('active')
+     }else{
+      dot.classList.remove('active')
+     }
+   })
+
+ }
+
+ const leftArrow = document.getElementById('left-arrow');
+ const rightArrow = document.getElementById('right-arrow');
+ 
+ leftArrow.addEventListener('click',()=>{
+  if(activeSlide>0){
+    activeSlide--;
+  }else{
+    activeSlide = totalVideos-1;
+  }
+  showVideos();
+ })
+
+ 
+ rightArrow.addEventListener('click',()=>{
+  if(activeSlide< (totalVideos-1)){
+    activeSlide++;
+  }else{
+    activeSlide = 0;
+  }
+  showVideos();
+ })
+function closeNav() {
+  document.getElementById("myNav").style.width = "0%";
+}
+
+
+next.addEventListener('click',()=>{
+  if(nextpage<=totalPages){
+    pageCall(nextpage)
+  }
+})
+
+prev.addEventListener('click',()=>{
+  if(nextpage> 0){
+    pageCall(prevpage)
+  }
+})
+
+function pageCall(page){
+  let urlSplit= lastUrl.split('?');
+  let queryParams = urlSplit[1].split('&');
+  let key = queryParams[queryParams.length -1].split('=');
+  if(key[0] != 'page'){
+    let url = lastUrl+'&page='+page;
+    getMovies(url);
+  }else{
+    key[1] = page.toString();
+    let a =key.join('=');
+    queryParams[queryParams.length-1]=a;
+    let b = queryParams.join('&');
+    let url = urlSplit[0]+'?'+b;
+    getMovies(url);
   }
 }
